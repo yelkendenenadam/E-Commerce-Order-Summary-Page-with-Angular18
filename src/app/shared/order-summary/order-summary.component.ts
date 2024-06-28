@@ -3,7 +3,6 @@ import {IOrderSummary} from "../../interface/iorder-summary";
 import {Subscription} from "rxjs";
 import {OrderSummaryService} from "../../service/order-summary/order-summary.service";
 import {CurrencyPipe, JsonPipe, NgIf, PercentPipe} from "@angular/common";
-import {IOrder} from "../../interface/iorder";
 import {OrderService} from "../../service/order/order.service";
 
 @Component({
