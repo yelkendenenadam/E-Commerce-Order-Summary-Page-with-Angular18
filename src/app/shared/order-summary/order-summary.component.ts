@@ -4,6 +4,8 @@ import {Subject, Subscription, takeUntil, tap} from "rxjs";
 import {OrderSummaryService} from "../../service/order-summary/order-summary.service";
 import {CurrencyPipe, JsonPipe, NgIf, PercentPipe} from "@angular/common";
 import {OrderService} from "../../service/order/order.service";
+import {CurrencyCustomPipe} from "../../pipe/currency-custom.pipe";
+import {HightlightDirective} from "../../directive/hightlight.directive";
 
 @Component({
   selector: 'app-order-summary',
@@ -12,7 +14,9 @@ import {OrderService} from "../../service/order/order.service";
     CurrencyPipe,
     PercentPipe,
     JsonPipe,
-    NgIf
+    NgIf,
+    CurrencyCustomPipe,
+    HightlightDirective
   ],
   templateUrl: './order-summary.component.html',
   styleUrl: './order-summary.component.scss'
@@ -32,7 +36,8 @@ export class OrderSummaryComponent {
         this.orderDetailsTotal = this.orderService.getOrderDetailsTotal(orderSummary.order);
         this.orderTotal = this.orderSummaryService.getOrderTotal(orderSummary);
       }),
-      takeUntil(this.destroy)).subscribe();
+      takeUntil(this.destroy)
+    ).subscribe();
   }
 
   ngOnDestroy() {

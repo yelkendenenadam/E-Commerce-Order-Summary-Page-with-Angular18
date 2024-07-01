@@ -4,10 +4,10 @@
   -----------------------------
   <div>Order Details Total: {{ orderDetailsTotal | currency }}</div>
   -----------------------------
-  <pre>Shipping: {{ orderSummary.shipping | json }}</pre>
+  <pre appHightlight>Shipping: {{ orderSummary.shipping | json }}</pre>
   -----------------------------
   <div>Tax: {{ orderSummary.tax.amount | percent }}</div>
   -----------------------------
-  <div>Order Total: {{ orderTotal | currency }}</div>
+  <div>Order Total: {{ orderTotal | currencyCustom }}</div>
 
 </div>
