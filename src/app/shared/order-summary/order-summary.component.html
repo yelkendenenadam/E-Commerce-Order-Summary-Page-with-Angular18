@@ -2,12 +2,12 @@
 <div *ngIf="orderSummary">
   <pre>Order Details: {{ orderSummary.order | json }}</pre>
   -----------------------------
-  <div>Order Details Total: {{ orderService.getOrderDetailsTotal(orderSummary.order) | currency }}</div>
+  <div>Order Details Total: {{ orderDetailsTotal | currency }}</div>
   -----------------------------
   <pre>Shipping: {{ orderSummary.shipping | json }}</pre>
   -----------------------------
   <div>Tax: {{ orderSummary.tax.amount | percent }}</div>
   -----------------------------
-  <div>Order Total: {{ orderSummaryService.getOrderTotal(orderSummary) | currency }}</div>
+  <div>Order Total: {{ orderTotal | currency }}</div>
 
 </div>

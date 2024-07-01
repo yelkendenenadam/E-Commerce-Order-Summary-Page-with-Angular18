@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {OrderService} from "../order/order.service";
 import {ShippingService} from "../shipping/shipping.service";
 import {TaxService} from "../tax/tax.service";
-import {concatMap, forkJoin, map, Observable} from "rxjs";
+import {concatMap, forkJoin, map, Observable, of} from "rxjs";
 import {IOrderSummary} from "../../interface/iorder-summary";
 import {IOrder} from "../../interface/iorder";
 
@@ -12,8 +12,6 @@ import {IOrder} from "../../interface/iorder";
 export class OrderSummaryService {
 
   constructor(private orderService: OrderService, private shippingService: ShippingService, private taxService: TaxService) { }
-
-
 
   getSummary(): Observable<IOrderSummary> {
     return forkJoin({

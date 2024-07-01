@@ -1,8 +1,10 @@
 const express = require('express');
 const compression = require('compression')
+const cors = require('cors')
 const app = express();
 const PORT = 3000;
-app.use(compression())
+app.use(compression());
+app.use(cors());
 
 
 const order = [
