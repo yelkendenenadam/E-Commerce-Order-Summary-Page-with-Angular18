@@ -1,5 +1,5 @@
 import {HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
-import {timer, retry, map, Observable, throwError} from "rxjs";
+import {timer, retry, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {

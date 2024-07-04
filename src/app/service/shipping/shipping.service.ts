@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { map, Observable, throwError, timer } from "rxjs";
-import { catchError, retry } from "rxjs/operators";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {map, Observable, shareReplay} from "rxjs";
 import { IShipping } from "../../interface/ishipping";
 
 @Injectable({
@@ -13,9 +12,11 @@ export class ShippingService {
   constructor(private http: HttpClient) { }
 
   getShipping(weight: number): Observable<IShipping> {
-    const url = `${this.apiUrl}?weight=${weight}`;
-    return this.http.get<{ shipping: IShipping }>(url).pipe(
+    const params = new HttpParams()
+      .set('weight', weight)
+    return this.http.get<{ shipping: IShipping }>(this.apiUrl, {params}).pipe(
       map(response => response.shipping),
+      shareReplay()
     );
   }
 

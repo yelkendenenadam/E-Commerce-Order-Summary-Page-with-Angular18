@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { map, Observable, throwError, timer } from "rxjs";
-import { catchError, retry } from "rxjs/operators";
+import { HttpClient } from "@angular/common/http";
+import {map, Observable, shareReplay} from "rxjs";
 import { ITax } from "../../interface/itax";
 
 @Injectable({
@@ -15,6 +14,7 @@ export class TaxService {
   getTax(): Observable<ITax> {
     return this.http.get<{ tax: ITax }>(this.apiUrl).pipe(
       map(response => response.tax),
+      shareReplay()
     );
   }
 

@@ -14,20 +14,22 @@ export class OrderSummaryService {
   constructor(private orderService: OrderService, private shippingService: ShippingService, private taxService: TaxService) { }
 
   /**
-   * Get order summary
+   * Get order summary by getting order, shipping, tax from respective API services.
+   * Tax and order requested concurrently and shipping consecutively to these requests.
+   * @return An observable of IOrderSummary containing requested order, shipping and tax data.
    */
   getSummary(): Observable<IOrderSummary> {
-    return forkJoin([
-      this.taxService.getTax(),
-      this.orderService.getOrder(),
-    ]).pipe(
-      switchMap(result => {
-        const totalWeight = this.orderService.getTotalWeight(result[1]);
+    return forkJoin({
+      tax: this.taxService.getTax(),
+      order: this.orderService.getOrder(),
+    }).pipe(
+      switchMap(taxAndOrder => {
+        const totalWeight = this.orderService.getTotalWeight(taxAndOrder.order);
         return this.shippingService.getShipping(totalWeight).pipe(
           map(shipping => ({
-            order: result[1],
+            order: taxAndOrder.order,
             shipping: shipping,
-            tax: result[0]
+            tax: taxAndOrder.tax
           }))
         )
       })
@@ -35,6 +37,12 @@ export class OrderSummaryService {
 
   }
 
+  /**
+   * Calculates an order's total cost by adding order items' price, shipping cost and tax.
+   *
+   * @param orderSummary Order summary to calculate cost
+   * @return The calculated cost is returned
+   */
   getOrderTotal(orderSummary: IOrderSummary) {
     return this.orderService.getOrderDetailsTotal(orderSummary.order)*(1+orderSummary.tax.amount) + orderSummary.shipping.cost;
   }

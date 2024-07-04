@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {IOrderSummary} from "../../interface/iorder-summary";
-import {Subject, Subscription, takeUntil, tap} from "rxjs";
+import {Subject, takeUntil, tap} from "rxjs";
 import {OrderSummaryService} from "../../service/order-summary/order-summary.service";
 import {CurrencyPipe, JsonPipe, NgIf, PercentPipe} from "@angular/common";
 import {OrderService} from "../../service/order/order.service";

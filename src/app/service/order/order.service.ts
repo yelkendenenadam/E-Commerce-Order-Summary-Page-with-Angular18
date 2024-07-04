@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {IOrder} from "../../interface/iorder";
-import {catchError, map, Observable, retry, throwError, timer} from "rxjs";
+import {map, Observable, shareReplay} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +13,25 @@ export class OrderService {
 
   getOrder(): Observable<IOrder[]> {
     return this.http.get<{order: IOrder[]}>(this.apiUrl).pipe(
-      map(response => response.order)
+      map(response => response.order),
+      shareReplay()
     );
   }
 
+  /**
+   * Calculates the total cost of an order by adding order items' price
+   * @param order The order to calculate total cost of
+   * @return Calculated total cost
+   */
   getOrderDetailsTotal(order: IOrder[]){
     return order.reduce((sum, item) => sum + item.price*item.qty, 0)
   }
 
+  /**
+   * Calculates the total weight of an order by adding order items' weight
+   * @param order The order to calculate total weight of
+   * @return Calculated total weight
+   */
   getTotalWeight(order: IOrder[]){
     return order.reduce((weight, order) => weight + (order.weight * order.qty), 0);
   }
