@@ -30,33 +30,53 @@ const tax = {
   amount: 0.07,
 };
 
-app.get('/order', (req, res) => {
-  try {
-    res.json({ order: order });
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred while fetching the order.' });
+function authentication(req, res, next){
+  const authheader = req.headers.authorization;
+  console.log(req.headers);
+
+  if (!authheader) {
+    let err = new Error('Unauthorized access!');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status = 401;
+    return next(err)
   }
+
+  const auth = new Buffer.from(authheader.split(' ')[1],
+    'base64').toString().split(':');
+  const user = auth[0];
+  const pass = auth[1];
+
+  if (user == 'admin' && pass == 'password') {
+
+    // If Authorized user
+    next();
+  } else {
+    let err = new Error('Unauthorized access!');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status = 401;
+    return next(err);
+  }
+}
+
+app.use(authentication);
+
+app.get('/order', (req, res, next) => {
+  res.json({ order: order });
 });
 
-app.get('/shipping', (req, res) => {
-  try {
-    const weight = req.query.weight;
-    if (!weight || isNaN(weight)) {
-      return res.status(400).json({ error: 'Invalid weight parameter.' });
-    }
-    shipping.cost = calculateShippingCost(Number(weight));
-    res.json({ shipping: shipping });
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred while fetching the shipping details.' });
+app.get('/shipping', (req, res, next) => {
+  const weight = req.query.weight;
+  if (!weight || isNaN(weight) || weight < 0) {
+    const err = new Error('Invalid weight parameter.');
+    err.status = 400;
+    next(err);
   }
+  shipping.cost = calculateShippingCost(Number(weight));
+  res.json({ shipping: shipping });
 });
 
-app.get('/tax', (req, res) => {
-  try {
-    res.json({ tax: tax });
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred while fetching the tax details.' });
-  }
+app.get('/tax', (req, res, next) => {
+  res.json({ tax: tax });
 });
 
 function calculateShippingCost(weight) {
@@ -64,8 +84,15 @@ function calculateShippingCost(weight) {
   return 7.99;
 }
 
-app.use((req, res) => {
-  res.status(404).json({ error: 'Endpoint not found.' });
+app.use((req, res, next) => {
+  const err = new Error("Endpoint not found")
+  err.status = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).send(err.message || 'An error occurred processing the request.');
 });
 
 app.listen(PORT, () => {

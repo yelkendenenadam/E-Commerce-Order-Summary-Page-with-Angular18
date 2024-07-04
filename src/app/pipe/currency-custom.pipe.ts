@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class CurrencyCustomPipe implements PipeTransform {
 
-  transform(value: number, ...args: unknown[]): unknown {
-    return '$'+value.toFixed(2);
+  transform(value: number, currencySymbol: string = '$', fractionDigits: number = 2): unknown {
+    return currencySymbol+value.toFixed( fractionDigits);
   }
 
 }

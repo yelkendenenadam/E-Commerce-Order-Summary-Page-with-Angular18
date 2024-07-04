@@ -13,13 +13,17 @@ export class OrderSummaryService {
 
   constructor(private orderService: OrderService, private shippingService: ShippingService, private taxService: TaxService) { }
 
+  /**
+   * Get order summary
+   */
   getSummary(): Observable<IOrderSummary> {
     return forkJoin([
       this.taxService.getTax(),
       this.orderService.getOrder(),
     ]).pipe(
       switchMap(result => {
-        return this.shippingService.getShipping(this.orderService.getTotalWeight(result[1])).pipe(
+        const totalWeight = this.orderService.getTotalWeight(result[1]);
+        return this.shippingService.getShipping(totalWeight).pipe(
           map(shipping => ({
             order: result[1],
             shipping: shipping,

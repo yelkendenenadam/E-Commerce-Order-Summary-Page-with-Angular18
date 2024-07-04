@@ -15,23 +15,8 @@ export class ShippingService {
   getShipping(weight: number): Observable<IShipping> {
     const url = `${this.apiUrl}?weight=${weight}`;
     return this.http.get<{ shipping: IShipping }>(url).pipe(
-      retry({
-        count: 5,
-        delay: (error, retryCount) => timer(retryCount * 1000)
-      }),
       map(response => response.shipping),
-      catchError(this.handleError) // Handle errors
     );
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Client-side error: ${error.error.message}`;
-    } else {
-      errorMessage = `Server-side error: ${error.status} - ${error.message}`;
-    }
-    console.error(errorMessage);
-    return throwError(() => new Error('Something went wrong with the request; please try again later.'));
-  }
 }
