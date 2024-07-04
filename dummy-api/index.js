@@ -31,17 +31,17 @@ const tax = {
 };
 
 function authentication(req, res, next){
-  const authheader = req.headers.authorization;
+  const authHeader = req.headers.authorization;
   console.log(req.headers);
 
-  if (!authheader) {
+  if (!authHeader) {
     let err = new Error('Unauthorized access!');
     res.setHeader('WWW-Authenticate', 'Basic');
     err.status = 401;
     return next(err)
   }
 
-  const auth = new Buffer.from(authheader.split(' ')[1],
+  const auth = new Buffer.from(authHeader.split(' ')[1],
     'base64').toString().split(':');
   const user = auth[0];
   const pass = auth[1];
@@ -90,7 +90,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(err.status || 500).send(err.message || 'An error occurred processing the request.');
 });
