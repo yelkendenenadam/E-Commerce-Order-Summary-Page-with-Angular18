@@ -20,12 +20,12 @@ export class ShippingService {
     );
   }
 
-  async getShippingAlt(weight: number) : Promise<IShipping> {
+  getShippingAlt(weight: number) : Promise<IShipping> {
     const params = new URLSearchParams();
     params.set('weight', weight.toString());
-    const response = await fetch(`${this.apiUrl}?${params.toString()}`);
-    const data = await response.json();
-    return data.shipping;
+    return fetch(`${this.apiUrl}?${params.toString()}`)
+      .then(response => response.json())
+      .then(data => data.shipping);
   }
 
 }

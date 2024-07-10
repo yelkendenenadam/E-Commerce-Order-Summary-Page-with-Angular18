@@ -19,11 +19,12 @@ export class OrderService {
     );
   }
 
-  async getOrderAlt() : Promise<IOrder[]> {
-    const response = await fetch(this.apiUrl);
-    const data = await response.json();
-    return data.order;
+  getOrderAlt(): Promise<IOrder[]> {
+    return fetch(this.apiUrl)
+      .then(response => response.json())
+      .then(data => data.order);
   }
+
 
   /**
    * Calculates the total cost of an order by adding order items' price

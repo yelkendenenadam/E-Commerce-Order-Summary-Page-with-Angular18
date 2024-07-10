@@ -19,11 +19,12 @@ export class TaxService {
     );
   }
 
-  async getTaxAlt() : Promise<ITax> {
-    const response = await fetch(this.apiUrl);
-    const data = await response.json();
-    return data.tax;
+  getTaxAlt(): Promise<ITax> {
+    return fetch(this.apiUrl)
+      .then(response => response.json())
+      .then(data => data.tax);
   }
+
 
 }
 

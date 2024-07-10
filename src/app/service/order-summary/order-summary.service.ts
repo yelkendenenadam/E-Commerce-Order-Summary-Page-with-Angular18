@@ -37,19 +37,22 @@ export class OrderSummaryService {
 
   }
 
-  async getSummaryAlt() : Promise<IOrderSummary> {
-    const [tax, order] = await Promise.all([
+  getSummaryAlt(): Promise<IOrderSummary> {
+    return Promise.all([
       this.taxService.getTaxAlt(),
       this.orderService.getOrderAlt()
-    ]);
-    const totalWeight = this.orderService.getTotalWeight(order);
-    const shipping = await this.shippingService.getShippingAlt(totalWeight);
-    return {
-      order: order,
-      shipping: shipping,
-      tax: tax
-    };
+    ])
+      .then(([tax, order]) => {
+        const totalWeight = this.orderService.getTotalWeight(order);
+        return this.shippingService.getShippingAlt(totalWeight)
+          .then(shipping => ({
+            order: order,
+            shipping: shipping,
+            tax: tax
+          }));
+      });
   }
+
 
   /**
    * Calculates an order's total cost by adding order items' price, shipping cost and tax.
