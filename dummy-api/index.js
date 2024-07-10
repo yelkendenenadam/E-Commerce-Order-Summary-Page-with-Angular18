@@ -32,7 +32,6 @@ const tax = {
 
 function authentication(req, res, next){
   const authHeader = req.headers.authorization;
-  console.log(req.headers);
 
   if (!authHeader) {
     let err = new Error('Unauthorized access!');
@@ -41,14 +40,13 @@ function authentication(req, res, next){
     return next(err)
   }
 
-  const auth = new Buffer.from(authHeader.split(' ')[1],
-    'base64').toString().split(':');
-  const user = auth[0];
-  const pass = auth[1];
+  const authCredentials = authHeader.split(' ')[1];
+  const auth = new Buffer.from(authCredentials,'base64').toString().split(':');
+  const username = auth[0];
+  const password = auth[1];
 
-  if (user == 'admin' && pass == 'password') {
+  if (username == 'admin' && password == 'password') {
 
-    // If Authorized user
     next();
   } else {
     let err = new Error('Unauthorized access!');
