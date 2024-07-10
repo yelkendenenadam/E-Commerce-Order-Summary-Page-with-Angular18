@@ -11,11 +11,18 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
+
   getOrder(): Observable<IOrder[]> {
     return this.http.get<{order: IOrder[]}>(this.apiUrl).pipe(
       map(response => response.order),
       shareReplay()
     );
+  }
+
+  async getOrderAlt() : Promise<IOrder[]> {
+    const response = await fetch(this.apiUrl);
+    const data = await response.json();
+    return data.order;
   }
 
   /**

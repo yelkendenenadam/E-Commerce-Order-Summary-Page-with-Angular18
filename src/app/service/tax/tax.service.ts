@@ -11,11 +11,18 @@ export class TaxService {
 
   constructor(private http: HttpClient) { }
 
+
   getTax(): Observable<ITax> {
     return this.http.get<{ tax: ITax }>(this.apiUrl).pipe(
       map(response => response.tax),
       shareReplay()
     );
+  }
+
+  async getTaxAlt() : Promise<ITax> {
+    const response = await fetch(this.apiUrl);
+    const data = await response.json();
+    return data.tax;
   }
 
 }

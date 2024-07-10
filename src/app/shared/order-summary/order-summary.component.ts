@@ -30,14 +30,21 @@ export class OrderSummaryComponent {
   constructor(protected orderSummaryService: OrderSummaryService, protected orderService: OrderService) {}
 
   ngOnInit(){
-    this.orderSummaryService.getSummary().pipe(
+    /*this.orderSummaryService.getSummary().pipe(
       tap(orderSummary => {
         this.orderSummary = orderSummary;
         this.orderDetailsTotal = this.orderService.getOrderDetailsTotal(orderSummary.order);
         this.orderTotal = this.orderSummaryService.getOrderTotal(orderSummary);
       }),
       takeUntil(this.destroy)
-    ).subscribe();
+    ).subscribe();*/
+
+    this.orderSummaryService.getSummaryAlt().then(orderSummary => {
+      this.orderSummary = orderSummary;
+      this.orderDetailsTotal = this.orderService.getOrderDetailsTotal(orderSummary.order);
+      this.orderTotal = this.orderSummaryService.getOrderTotal(orderSummary);
+    });
+
   }
 
   ngOnDestroy() {
