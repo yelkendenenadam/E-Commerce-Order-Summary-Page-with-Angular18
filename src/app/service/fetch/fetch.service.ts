@@ -12,7 +12,7 @@ export class FetchService {
     const authPassword = 'password';
     const authToken = btoa(`${authId}:${authPassword}`);
 
-    const retryAttempts = 5;
+    const retryAttempts = 3;
     const retryDelay = 1000;
 
     const makeRequest = (attempt: number): Promise<any> => {
@@ -26,12 +26,11 @@ export class FetchService {
       })
         .then(response => {
           if (!response.ok) {
-            return Promise.reject(`Server-side error: ${response.status} - ${response.statusText}`);
+            return Promise.reject(`Server-side error: ${response.url} - ${response.status} - ${response.statusText}`);
           }
           return response;
         })
         .catch(error => {
-          console.error(error);
           if (attempt <= retryAttempts) {
             return new Promise<any>((resolve) => setTimeout(() => resolve(makeRequest(attempt + 1)), retryDelay * attempt)
             );
@@ -39,7 +38,7 @@ export class FetchService {
             return Promise.reject(error);
           }
         });
-    };
+    }
 
     return makeRequest(1);
   }

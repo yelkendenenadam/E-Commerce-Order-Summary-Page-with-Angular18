@@ -28,7 +28,6 @@ export class ShippingService {
     return this.FetchService.secureFetch(`${this.apiUrl}?${params.toString()}`)
       .then(response => response.json())
       .then(data => data.shipping)
-      .catch(error => console.error(`Client-side error: ${error}`));
   }
 
 }

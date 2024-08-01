@@ -24,7 +24,6 @@ export class TaxService {
     return this.FetchService.secureFetch(this.apiUrl)
       .then(response => response.json())
       .then(data => data.tax)
-      .catch(error => console.error(`Client-side error: ${error}`));
   }
 
 }

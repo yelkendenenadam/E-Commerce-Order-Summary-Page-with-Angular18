@@ -24,7 +24,6 @@ export class OrderService {
     return this.FetchService.secureFetch(this.apiUrl)
       .then(response => response.json())
       .then(data => data.order)
-      .catch(error => console.error(`Client-side error: ${error}`));
   }
 
 
