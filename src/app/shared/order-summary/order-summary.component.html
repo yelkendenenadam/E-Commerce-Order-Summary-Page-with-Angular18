@@ -1,13 +1,14 @@
 <h2>Order Summary</h2>
-<div *ngIf="orderSummary">
-  <pre>Order Details: {{ orderSummary.order | json }}</pre>
-  -----------------------------
-  <div>Order Details Total: {{ orderDetailsTotal | currency }}</div>
-  -----------------------------
-  <pre>Shipping: {{ orderSummary.shipping | json }}</pre>
-  -----------------------------
-  <div>Tax: {{ orderSummary.tax.amount | percent }}</div>
-  -----------------------------
-  <div>Order Total: {{ orderTotal | currencyCustom}}</div>
-
-</div>
+@if (orderSummary) {
+  <div>
+    <pre>Order Details: {{ orderSummary.order | json }}</pre>
+    -----------------------------
+    <div>Order Details Total: {{ orderDetailsTotal | currency }}</div>
+    -----------------------------
+    <pre>Shipping: {{ orderSummary.shipping | json }}</pre>
+    -----------------------------
+    <div>Tax: {{ orderSummary.tax.amount | percent }}</div>
+    -----------------------------
+    <div>Order Total: {{ orderTotal | currencyCustom}}</div>
+  </div>
+}

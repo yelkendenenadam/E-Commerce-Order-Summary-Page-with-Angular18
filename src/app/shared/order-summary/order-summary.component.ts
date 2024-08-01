@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {IOrderSummary} from "../../interface/iorder-summary";
 import {Subject, takeUntil, tap} from "rxjs";
 import {OrderSummaryService} from "../../service/order-summary/order-summary.service";
-import {CurrencyPipe, JsonPipe, NgIf, PercentPipe} from "@angular/common";
+import { CurrencyPipe, JsonPipe, PercentPipe } from "@angular/common";
 import {OrderService} from "../../service/order/order.service";
 import {CurrencyCustomPipe} from "../../pipe/currency-custom.pipe";
 import {HightlightDirective} from "../../directive/hightlight.directive";
@@ -14,10 +14,9 @@ import {HightlightDirective} from "../../directive/hightlight.directive";
     CurrencyPipe,
     PercentPipe,
     JsonPipe,
-    NgIf,
     CurrencyCustomPipe,
     HightlightDirective
-  ],
+],
   templateUrl: './order-summary.component.html',
   styleUrl: './order-summary.component.scss'
 })

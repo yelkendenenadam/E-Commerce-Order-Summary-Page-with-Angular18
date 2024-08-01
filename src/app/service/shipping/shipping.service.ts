@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {map, Observable, shareReplay} from "rxjs";
 import { IShipping } from "../../interface/ishipping";
+import {FetchService} from "../fetch/fetch.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { IShipping } from "../../interface/ishipping";
 export class ShippingService {
   private apiUrl = 'http://localhost:3000/shipping';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private FetchService: FetchService) { }
 
   getShipping(weight: number): Observable<IShipping> {
     const params = new HttpParams()
@@ -20,12 +21,14 @@ export class ShippingService {
     );
   }
 
-  getShippingAlt(weight: number) : Promise<IShipping> {
+  getShippingAlt(weight: number): Promise<IShipping> {
     const params = new URLSearchParams();
     params.set('weight', weight.toString());
-    return fetch(`${this.apiUrl}?${params.toString()}`)
+
+    return this.FetchService.secureFetch(`${this.apiUrl}?${params.toString()}`)
       .then(response => response.json())
-      .then(data => data.shipping);
+      .then(data => data.shipping)
+      .catch(error => console.error(`Client-side error: ${error}`));
   }
 
 }

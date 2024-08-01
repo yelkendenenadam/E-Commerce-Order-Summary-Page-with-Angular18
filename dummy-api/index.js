@@ -56,7 +56,17 @@ function authentication(req, res, next){
   }
 }
 
-//app.use(authentication);
+function randomRateLimiting(req, res, next) {
+  if (Math.random() < 1/3) {
+    const err = new Error('Too Many Requests');
+    err.status = 429;
+    return next(err);
+  }
+  next();
+}
+
+app.use(authentication);
+app.use(randomRateLimiting);
 
 app.get('/order', (req, res, next) => {
   res.json({ order: order });

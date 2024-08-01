@@ -14,7 +14,7 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'E-Commerce-Page-Summary-with-Angular18' title`, () => {
+  it(`should have the 'E-Commerce-Summary-Page-with-Angular18' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('E-Commerce-Page-Summary-with-Angular18');

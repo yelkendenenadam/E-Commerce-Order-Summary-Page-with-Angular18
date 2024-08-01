@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {IOrder} from "../../interface/iorder";
 import {map, Observable, shareReplay} from "rxjs";
+import {FetchService} from "../fetch/fetch.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import {map, Observable, shareReplay} from "rxjs";
 export class OrderService {
   private apiUrl = 'http://localhost:3000/order';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private FetchService: FetchService) { }
 
 
   getOrder(): Observable<IOrder[]> {
@@ -20,9 +21,10 @@ export class OrderService {
   }
 
   getOrderAlt(): Promise<IOrder[]> {
-    return fetch(this.apiUrl)
+    return this.FetchService.secureFetch(this.apiUrl)
       .then(response => response.json())
-      .then(data => data.order);
+      .then(data => data.order)
+      .catch(error => console.error(`Client-side error: ${error}`));
   }
 
 

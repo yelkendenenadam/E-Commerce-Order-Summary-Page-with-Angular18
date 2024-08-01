@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {map, Observable, shareReplay} from "rxjs";
 import { ITax } from "../../interface/itax";
+import {IOrder} from "../../interface/iorder";
+import {FetchService} from "../fetch/fetch.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { ITax } from "../../interface/itax";
 export class TaxService {
   private apiUrl = 'http://localhost:3000/tax';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private FetchService: FetchService) { }
 
 
   getTax(): Observable<ITax> {
@@ -20,11 +22,11 @@ export class TaxService {
   }
 
   getTaxAlt(): Promise<ITax> {
-    return fetch(this.apiUrl)
+    return this.FetchService.secureFetch(this.apiUrl)
       .then(response => response.json())
-      .then(data => data.tax);
+      .then(data => data.tax)
+      .catch(error => console.error(`Client-side error: ${error}`));
   }
-
 
 }
 
