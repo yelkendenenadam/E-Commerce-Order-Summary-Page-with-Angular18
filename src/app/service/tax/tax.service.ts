@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {map, Observable, shareReplay} from "rxjs";
 import { ITax } from "../../interface/itax";
-import {IOrder} from "../../interface/iorder";
 import {FetchService} from "../fetch/fetch.service";
 
 @Injectable({
